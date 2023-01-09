@@ -1,0 +1,16 @@
+L'autre jour j'ai revu le petit film que nous avions tourné à l'époque avec
+Neil Armstrong. C'est fou ce qu'on a réussi à faire à l'époque !
+
+Quand je vois les effets spéciaux d'aujourd'hui, je me dis qu'on était vraiment
+avant-gardistes...
+
+PS : Nous avons bien avancé sur la sécurisation de notre serveur d'échange 
+d'informations. Le serveur FTP est opérationnel ainsi que notre module de 
+sécurité matériel.
+
+TODO :
+    - Implémenter la décompression
+    - Utiliser un fichier moins sensible que home_backup.tar pour les tests de compression
+    - Intégrer le système de fichier "goodfs" au serveur FTP
+
+SSTIC{f074370fa82189b5996228bb4a1df23d}

@@ -1,0 +1,106 @@
+130c0: [r10+44] = r5
+130c7: state = r0
+130ce: outptr = r1
+130d5: match_offsets = r2
+
+130dc: r0 = state
+130e3: r1 = outptr
+130ea: r14 = r14 - 4
+130ef: r2 = 0x20
+130f8: r0 = s03_init_freq(r0, r1, r2) # 101bce
+13100: r14 = r14 + 4
+
+13107: [r10+20] = 0x0
+
+  # iterate for match_count
+  1311d: r0 = [r10+20]
+  13124: r1 = state
+  1312b: r2 = 0x2524
+  13134: r1 = r1 + r2
+  1313b: r1 = [r1+0]
+  13142: r0 = r0 < r1
+  13149: if r0 == 0: goto 131d2
+  13156: r4 = state
+
+  1315d: r0 = match_offsets
+  13164: r1 = [r10+20]
+  1316b: r0 = [r0+r1*4]
+  13172: r14 = r14 - 4
+  13177: r0 = matchoff_to_code(r0) # 102486
+  1317f: r14 = r14 + 4
+
+  13186: r1 = r0
+  1318d: r14 = r14 - 4
+  13192: r0 = r4
+  13199: s04_freq_increment(r0, r1) # 101ce6
+  131a1: r14 = r14 + 4
+
+  131ae: [r10+20] += 1
+  131cc: goto 1311d
+
+131d2: r0 = state
+131d9: r14 = r14 - 4
+131de: s05_freq_process(r0) # 102210
+131e6: r14 = r14 + 4
+
+131ed: [r10+16] = 0x0
+131fd: goto 13203
+
+  13203: r0 = [r10+16]
+  1320a: r1 = state
+  13211: r2 = 0x2524
+  1321a: r1 = r1 + r2
+  13221: r1 = [r1+0]
+  13228: r0 = r0 < r1
+  1322f: if r0 == 0: goto 13364
+  13236: goto 1323c
+  1323c: r0 = match_offsets
+  13243: r1 = [r10+16]
+  1324a: r0 = [r0+r1*4]
+  13251: [r10+12] = r0
+  13258: r4 = state
+
+  1325f: r0 = [r10+12]
+  13266: r14 = r14 - 4
+  1326b: r0 = matchoff_to_code(r0) # 102486
+  13273: r14 = r14 + 4
+
+  1327a: r1 = r0
+  13281: r14 = r14 - 4
+  13286: r0 = r4
+  1328d: s06_write_huffman(r0, r1) # 101c9c
+  13295: r14 = r14 + 4
+
+  1329c: r0 = [r10+12] < 0x2
+  132b3: if r0 != 0: goto 1333a
+
+    132c0: r0 = [r10+12]
+    132c7: r14 = r14 - 4
+    132cc: r0 = clear_leading_bit(r0) # 1024ab
+    132d4: r14 = r14 + 4
+
+    132db: [r10+8] = r0
+    132e2: r4 = state
+    132e9: r5 = [r10+8]
+
+    132f0: r0 = [r10+12]
+    132f7: r14 = r14 - 4
+    132fc: r0 = bin_log2(r0) # 101a2f
+    13304: r14 = r14 + 4
+
+    1330b: r2 = r0
+
+    13312: r14 = r14 - 4
+    13317: r0 = r4
+    1331e: r1 = r5
+    13325: state_out_bits(r0, r1, r2) # 102a83
+    1332d: r14 = r14 + 4
+  1333a: [r10+16] += 1
+  1335e: goto 13203
+
+13364: r0 = state
+1336b: r14 = r14 - 4
+13370: r0 = state_out_pad(r0, r1, r2, r3, r4) # 101ae7
+13378: r14 = r14 + 4
+1337f: r5 = [r10+44]
+13386: return r0

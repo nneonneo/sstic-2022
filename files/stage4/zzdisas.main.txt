@@ -1,0 +1,31 @@
+# Compress the file 0x10000 bytes at a time
+1338c: state = r0
+13393: fileptr = r1
+1339a: filesize = r2
+133a1: outptr = r3
+133a8: outbase = outptr
+133b6: chunksize = 0x10000
+133c6: filepos = 0x0
+133d6: goto 133dc
+  133dc: if filepos >= filesize: goto 1350c
+
+  1341a: [r10+20] = min(chunksize, filesize - filepos)
+  13435: lenptr = outptr
+  13443: outptr = outptr + 3
+
+  13461: r0 = state
+  13468: r1 = fileptr
+  1346f: r2 = filepos
+  13476: r3 = r2 + [r10+20]
+  13484: r4 = outptr
+  1348b: r14 = r14 - 4
+  13490: res = vmcall 13527(r0, r1, r2, r3, r4) # compress_chunk
+  13498: r14 = r14 + 4
+
+  134a6: write24(lenptr, res)
+
+  134c8: outptr += res
+  134ff: filepos += chunksize
+  13506: goto 133dc
+
+1350c: return outptr - outbase

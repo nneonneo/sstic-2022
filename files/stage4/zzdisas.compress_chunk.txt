@@ -1,0 +1,148 @@
+13527: [r10+60] = r5
+1352e: state = r0
+13535: fileptr = r1
+1353c: filepos = r2
+13543: filelimit = r3
+1354a: outptr = r4
+13551: outbase = outptr
+
+1355f: r14 = r14 - 4
+1356b: s01_init_matches(state) # 102894
+13573: r14 = r14 + 4
+
+1357a: [state + 0x2524] = 0x0
+135a1: [state + 0x2528] = 0x0
+
+135bf: r0 = state
+135c6: r1 = fileptr
+135cd: r2 = filepos
+135d4: r3 = filelimit
+135db: r14 = r14 - 4
+135e0: s02_find_matches(r0, r1, r2, r3) # 102675
+135e8: r14 = r14 + 4
+
+# write number of literals
+135ef: r1 = state
+135fd: r1 = r1 + 0x2528
+13604: r1 = [r1+0]
+1360b: r14 = r14 - 4
+13610: write24(outptr, r1)
+13618: r14 = r14 + 4
+
+1361f: outptr += 3
+1363d: [r10+24] = outptr
+1364b: outptr += 3
+
+13660: r0 = state
+13667: r1 = outptr
+1366e: r14 = r14 - 4
+13673: r2 = 0x100
+1367c: s03_init_freq(r0, r1, r2) # 101bce
+13684: r14 = r14 + 4
+
+1368b: [r10+20] = 0x0
+
+  # loop for each literal (until [r10+20] >= [state+0x2528])
+  13698: r0 = [r10+20]
+  1369f: r1 = state
+  136a6: r2 = 0x2528
+  136af: r1 = r1 + r2
+  136b6: r1 = [r1+0]
+  136bd: r0 = r0 < r1
+  136c4: if r0 == 0: goto 13734
+
+  # count frequency of literals
+  136d1: r0 = state
+  136d8: r1 = [r10+20]
+  136df: r1 = r0 + r1
+  136e6: r1 = [r1+0x252c]
+  136f6: r14 = r14 - 4
+  136fb: s04_freq_increment(r0, r1) # 101ce6
+  13703: r14 = r14 + 4
+
+  13710: [r10+20] += 1
+  1372e: goto 13698
+
+13734: r0 = state
+1373b: r14 = r14 - 4
+13740: s05_freq_process(r0) # 102210
+13748: r14 = r14 + 4
+
+1374f: [r10+16] = 0x0
+
+  # loop for each literal
+  13765: r0 = [r10+16]
+  1376c: r1 = state
+  13773: r2 = 0x2528
+  1377c: r1 = r1 + r2
+  13783: r1 = [r1+0]
+  1378a: r0 = r0 < r1
+  13791: if r0 == 0: goto 13801
+
+  1379e: r0 = state
+  137a5: r1 = [r10+16]
+  137ac: r1 = r0 + r1
+  137b3: r2 = 0x252c
+  137bc: r1 = [r1+r2]
+  137c3: r14 = r14 - 4
+  137c8: s06_write_huffman(r0, r1) # 101c9c
+  137d0: r14 = r14 + 4
+
+  137dd: [r10+16] += 1
+  137fb: goto 13765
+
+13801: r0 = state
+13808: r14 = r14 - 4
+1380d: r0 = state_out_pad(r0, r1, r2, r3, r4) # 101ae7
+13815: r14 = r14 + 4
+1381c: [r10+12] = r0
+
+13823: outptr += [r10+12]
+
+1383f: r0 = [r10+24]
+13846: r1 = [r10+12]
+1384d: r14 = r14 - 4
+13852: write24(r0, r1)
+1385a: r14 = r14 + 4
+
+13861: r0 = outptr
+13868: r1 = state
+1386f: r2 = 0x2524
+13878: r1 = r1 + r2
+1387f: r1 = [r1+0]
+13886: r14 = r14 - 4
+1388b: write24(r0, r1)
+13893: r14 = r14 + 4
+
+1389a: outptr += 3
+
+# write match literals
+138b8: r0 = state
+138bf: r1 = outptr
+138c6: r2 = r0 + 0x3252c
+138d6: r14 = r14 - 4
+138db: r0 = s07_xxx(r0, r1, r2, r3, r4) # 102926
+138e3: r14 = r14 + 4
+138ea: outptr += r0
+
+# write match offsets
+138ff: r0 = state
+13906: r1 = outptr
+1390d: r2 = r0 + 0x1252c
+1391d: r14 = r14 - 4
+13922: r0 = vmcall 130c0(r0, r1, r2) # match_offsets
+1392a: r14 = r14 + 4
+13931: outptr += r0
+
+# write match lengths
+13946: r0 = state
+1394d: r1 = outptr
+13954: r2 = r0 + 0x2252c
+13964: r14 = r14 - 4
+13969: r0 = sub_0x2974(r0, r1, r2, r3, r4) # 102974
+13971: r14 = r14 + 4
+13978: outptr += r0
+
+1398d: r0 = outptr - outbase
+139a2: r5 = [r10+60]
+139a9: return r0

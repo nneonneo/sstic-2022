@@ -1,0 +1,68 @@
+#!/bin/sh
+
+chown -R root:root /
+chown -R sstic:sstic /home/sstic
+
+mkdir /proc
+mkdir /sys
+mkdir /run
+
+mount -t proc -o nodev,noexec,nosuid proc /proc
+mount -t sysfs -o nodev,noexec,nosuid sysfs /sys
+ln -sf /proc/mounts /etc/mtab
+mount -t devtmpfs -o nosuid,mode=0755 udev /dev
+mkdir -p /dev/pts
+mount -t devpts -o noexec,nosuid,gid=5,mode=0620 devpts /dev/pts || true
+mount -t tmpfs -o "noexec,nosuid,size=10%,mode=0755" tmpfs /run
+
+chown root:root /proc
+chown root:root /sys
+
+chmod 700 /proc
+chmod 700 /sys
+
+# setup serial ports (console + HSM)
+chmod o+rw /dev/ttyS0
+chmod o+rw /dev/ttyS1
+
+chown -R sstic:sstic /home/sstic
+chmod 700 /home/sstic
+chmod 555 /home/sstic/server
+
+mv /devices/* /dev
+rmdir /devices
+
+echo 0 > /proc/sys/kernel/kptr_restrict
+echo 1 > /proc/sys/kernel/perf_event_paranoid
+echo 1 > /proc/sys/kernel/dmesg_restrict
+echo 2 > /proc/sys/kernel/kptr_restrict
+
+# load module
+insmod /goodfs.ko
+
+# create mount point
+mkdir -p /mnt/goodfs
+chmod 755 /mnt/goodfs
+
+HSM_DEVICE=/dev/ttyS1 /bin/mounter_server > /dev/null 2>/dev/null &
+
+while [ ! -f /run/mount_shm ]
+do
+  sleep 0.02
+done
+
+stty erase ^H
+
+cd /home/sstic
+
+#uncomment that for shell
+#stty -F /dev/ttyS0 -icrnl -ixon -ixoff -opost -isig #-icanon -echo
+#setsid cttyhack setuidgid 1000 sh
+
+# Set env variables to determine data port : 256*P1 + P2
+HSM_DEVICE=/dev/ttyS1 P1=130 P2=64 setuidgid 1000 /home/sstic/server
+
+umount /proc
+umount /sys
+
+poweroff -f

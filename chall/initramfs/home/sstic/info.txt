@@ -1,0 +1,5 @@
+J'ai installé un module de sécurité hardware pour sécuriser le serveur FTP !
+En rajoutant de la crypto pour signer toutes sortes de données, on a un serveur
+en béton :)
+
+TODO : Penser à faire vérifier la crypto

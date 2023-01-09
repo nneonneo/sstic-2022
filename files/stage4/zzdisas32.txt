@@ -1,0 +1,41 @@
+107c1: [r10+52] = r5
+107c8: [r10+48] = r6
+107cf: r0 = 0x11100000
+107d8: r0 = [r0+0]
+107df: [r10+40] = r0
+107e6: r0 = 0x11100004
+107ef: r0 = [r0+0]
+107f6: [r10+32] = r0
+107fd: r0 = 0x11100008
+10806: r0 = [r0+0]
+1080d: [r10+24] = r0
+10814: r0 = [r10+40]
+1081b: r1 = [r10+32]
+10822: r14 -= 4
+10827: r2 = 0x20
+10830: r4 = 0x0
+10839: r3 = r4
+10840: r0 = sub_0x111115e6(r0, r1, r2, r3, r4)
+10848: UNK_4935
+0xdd0c:	add	edi, 4
+0xdd0f:	xor	edx, edx
+0xdd11:	jmp	0xb82e
+0xb82e:	mov	dl, byte ptr [edi]
+0xb830:	add	edi, 1
+0xb833:	xor	eax, eax
+0xb835:	jmp	0xcb66
+0xcb66:	mov	al, byte ptr [edi]
+0xcb68:	add	edi, 1
+0xcb6b:	xor	ebx, ebx
+0xcb6d:	jmp	0xb83e
+0xb83e:	mov	bl, byte ptr [edi]
+0xb840:	add	edi, 1
+0xb843:	mov	eax, dword ptr [ebp + eax*4]
+0xb847:	jmp	0xc73a
+0xc73a:	shl	ebx, 2
+0xc73d:	add	eax, ebx
+0xc73f:	mov	dword ptr [ebp + edx*4], eax
+0xc743:	mov	edx, dword ptr [edi]
+0xc745:	lea	esi, [0x11111187]
+0xc74b:	add	esi, edx
+0xc74d:	jmp	esi

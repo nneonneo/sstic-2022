@@ -1,0 +1,1 @@
+J'ai été informé qu'il manque un mark_buffer_dirty quelque part dans mon code, mais où ?

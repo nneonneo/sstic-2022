@@ -1,0 +1,27 @@
+Cette archive secrète contient le projet "SEUKRAI", un système d'upload de fichiers que j'ai conçu.
+
+Il s'agit d'un serveur FTP, qui aura à terme les capacités suivantes :
+
+    - Stockage de fichiers anonyme
+    - Compression custom de données
+    - Le tout hébergé sur un système de fichier custom
+
+Pour le moment, seul le serveur FTP est pleinement opérationnel, les autres fonctionnalités sont en cours de test, 
+vous pouvez accéder à mon instance de test sur 62.210.131.87 pour y jeter un oeil.
+
+L'utilisateur "anon" a un accès libre aux dossier public, mais ce n'est qu'une façade : Une fois toutes les fonctionnalités
+implémentées, il sera possible de se connecter via un utilisateur secret, afin d'accéder aux données hautement classifiées
+de notre organisation.
+
+Ce système est extrêmement sécurisé, et son implémentation entièrement faite maison permettra à nos opérations de rester secrètes.
+
+Vous pouvez monter votre propre instance du serveur à des fins de test. A terme, il s'agira votre principal moyen 
+de communication avec les autres membres de l'organisation. 
+
+Je vous tiendrai au courant de la finalisation du développement dans les prochaines semaines.
+
+
+Cordialement,
+Grand Gourou Skippy
+
+SSTIC{47962828593d98d0d7392590529c4014}

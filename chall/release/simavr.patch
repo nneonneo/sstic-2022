@@ -1,0 +1,73 @@
+diff --git a/examples/board_simduino/Makefile b/examples/board_simduino/Makefile
+index b1e970f..17f8810 100644
+--- a/examples/board_simduino/Makefile
++++ b/examples/board_simduino/Makefile
+@@ -41,6 +41,7 @@ board = ${OBJ}/${target}.elf
+ 
+ ${board} : ${OBJ}/uart_pty.o
+ ${board} : ${OBJ}/${target}.o
++${board} : ${OBJ}/i2c_eeprom.o
+ 
+ ${target}: ${board}
+ 	@echo $@ done
+diff --git a/examples/board_simduino/simduino.c b/examples/board_simduino/simduino.c
+index 007b383..42743e2 100644
+--- a/examples/board_simduino/simduino.c
++++ b/examples/board_simduino/simduino.c
+@@ -42,6 +42,13 @@
+ #include "uart_pty.h"
+ #include "sim_vcd_file.h"
+ 
++#include "avr_twi.h"
++#include "i2c_eeprom.h"
++
++#define EEPROM_ADDR 0xA0
++
++i2c_eeprom_t ee;
++
+ uart_pty_t uart_pty;
+ avr_t * avr = NULL;
+ avr_vcd_t vcd_file;
+@@ -102,6 +109,9 @@ int main(int argc, char *argv[])
+ 	int debug = 0;
+ 	int verbose = 0;
+ 
++    setvbuf(stdout, NULL, _IONBF, 0);
++    setvbuf(stderr, NULL, _IONBF, 0);
++
+ 	for (int i = 1; i < argc; i++) {
+ 		if (!strcmp(argv[i] + strlen(argv[i]) - 4, ".hex"))
+ 			strncpy(boot_path, argv[i], sizeof(boot_path));
+@@ -159,6 +169,32 @@ int main(int argc, char *argv[])
+ 	uart_pty_init(avr, &uart_pty);
+ 	uart_pty_connect(&uart_pty, '0');
+ 
++    uint8_t eeprom_mem[4096];
++    memset(eeprom_mem, 0, 4096);
++
++	char *k1, *k2, *pw;
++	uint64_t key1 = 0;
++	uint64_t key2 = 0;
++	if ((k1 = getenv("K1"))) {
++		key1 = strtoul(k1, 0, 10);
++	}
++	if ((k2 = getenv("K2"))) {
++		key2 = strtoul(k2, 0, 10);
++	}
++	pw = getenv("GOODFS_PASSWD");
++
++	if (key1 == 0 || key2 == 0 || !pw || strlen(pw)>=0x20) {
++		printf("error with keys or password\n");
++		exit(1);
++	}
++
++    memcpy(eeprom_mem, &key1, sizeof(key1));
++    memcpy(eeprom_mem + 8, &key2, sizeof(key2));
++	memcpy(eeprom_mem + 16, pw, strlen(pw));
++
++    i2c_eeprom_init(avr, &ee, EEPROM_ADDR, 0x01, eeprom_mem, sizeof(eeprom_mem));
++    i2c_eeprom_attach(avr, &ee, AVR_IOCTL_TWI_GETIRQ(0));
++
+ 	while (1) {
+ 		int state = avr_run(avr);
+ 		if ( state == cpu_Done || state == cpu_Crashed)

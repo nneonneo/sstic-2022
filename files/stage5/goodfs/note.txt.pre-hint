@@ -1,0 +1,19 @@
+30/04/1945 :
+    L'extraction de notre ami sur la lune s'est passée correctement, et tout le monde a été convaincu qu'il est décédé.
+    En cas de voyage sur place dans le futur, il faudra masquer sa présence par le biais d'effets spéciaux.
+
+22/11/1963 : 
+    Nos confrères reptiliens à la CIA ont exécuté le plan à la perfection.
+
+25/09/2022 :
+    Je ne sais pas exactement comment, mais un hacker est parvenu a forger un inode pour lire ce fichier secret.
+    J'ai donc déplacé mes informations les plus sensibles dans /root.
+
+    Il m'a dit pouvoir aussi accéder /root via la compromission de mounter_server, mais c'est impossible, ce service n'est pas vulnérable !
+    Je suis tellement confiant de cela que j'ai retiré toutes les mitigations de ce programme lors de sa compilation.
+
+    Il a forcément corrompu ce processus via l'exploitation de goodfs, mais comment ?
+
+    PS : C'est peut-être une mauvaise idée de parler de tout ça ici...
+
+SSTIC{c96f1fa046e5e998e5ae511d9c846fcd}
